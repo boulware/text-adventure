@@ -62,19 +62,22 @@ player = people[-1]
 people.append(person('john'))
 people.append(person('mary'))
 
+class e_target_type(Enum):
+	null = 0, 		# No target exists with the given specs
+	ambiguous = 1,	# Multiple targets exist with the given specs
+	unique = 2,		# Exactly one target exists with the given specs
 
-def check_target(action, target, *args):
-	# (SELF) The name of this function is a bit ambiguous and/or not really describing what it does completely.	
+def check_target(target):
 	target_count = len(target)
 
 	if target_count == 0:
 		print("That person ({}) doesn't exist.".format(target_name))
+		return e_target_type.null
 	elif target_count > 1:
 		print("That name ({}) is ambiguous.".format(target_name))
+		return e_target_type.ambiguous
 	if target_count == 1:
-		# Target with the given name exists and it's unique.
-		#player.kill(*target)	
-		action(*target, *args)
+		return e_target_type.unique
 
 text_input = ''
 while text_input != 'q':
@@ -98,7 +101,8 @@ while text_input != 'q':
 			target_name = input('> (kill) ')
 
 		target = find_member_by_name(people, target_name)
-		check_target(player.kill, target)
+		if check_target(target) == e_target_type.unique:
+			player.kill(*target)
 
 	# Syntax:
 	#	tell TARGET "UTTERANCE"
@@ -125,7 +129,8 @@ while text_input != 'q':
 
 		if not bad_syntax:
 			target = find_member_by_name(people, target_name)
-			check_target(player.tell, target, utterance)
+			if check_target(target) == e_target_type.unique:
+				player.tell(*target, utterance)
 
 	# Syntax:
 	#	
