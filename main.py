@@ -27,11 +27,13 @@ class e_action(Enum):
 	tell = 1,
 
 class event:
-	def __init__(self, agent, patient, action, time):
+	def __init__(self, time, agent, action, patient = None, recipient = None):
 		self.agent = agent
-		self.patient = patient
 		self.action = action
 		self.time = time
+		self.patient = patient
+		self.recipient = recipient
+
 
 @unique
 class e_status(Enum):
@@ -46,12 +48,12 @@ class person:
 	def kill(self, target):
 		if target.status == e_status.alive:
 			target.status = e_status.dead
-			events.append(event(self, target, e_action.kill, world_time))
+			events.append(event(world_time, self, e_action.kill, target))
 			print("{} killed {} at {} o'clock.".format(self.name, target.name, world_time))
 		else:
 			print("{} is already dead.".format(target.name))
 	def tell(self, target, utterance):
-		events.append(event(self, target, e_action.tell, world_time))
+		events.append(event(world_time, self, e_action.tell, target))
 		print("{} told {} \"{}\" at {} o'clock.".format(self.name, target.name, utterance, world_time))
 
 people = []
