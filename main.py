@@ -25,6 +25,7 @@ class container:
 class e_action(Enum):
 	kill = 0,
 	tell = 1,
+	give = 2,
 
 class event:
 	def __init__(self, time, agent, action, patient = None, recipient = None):
@@ -55,6 +56,9 @@ class person:
 	def tell(self, target, utterance):
 		events.append(event(world_time, self, e_action.tell, target))
 		print("{} told {} \"{}\" at {} o'clock.".format(self.name, target.name, utterance, world_time))
+	def give(self, item, target):
+		events.append(event(world_time, self, e_action.give, item, target))
+		print("{} gave {} to {} at {} o'clock.".format(self.name, item.name, target.name, world_time))
 
 class group(list):
 	def __init__(self, member_title):
@@ -65,6 +69,13 @@ people.append(person('tyler'))
 player = people[-1]
 people.append(person('john'))
 people.append(person('mary'))
+
+class item:
+	def __init__(self, name):
+		self.name = name
+
+items = group('item')
+items.append(item('torch'))
 
 class e_target_type(Enum):
 	null = 0, 		# No target exists with the given specs
@@ -137,10 +148,27 @@ while text_input != 'q':
 				player.tell(*target_list, utterance)
 
 	# Syntax:
-	#	
+	#	give ITEM to TARGET
+	if command[0] == 'give':
+		bad_syntax = False
+
+		if parameters:
+			item_name = ""
+			target_name = ""
+		else:
+			print("What would you like to give?")
+			item_name = input('> (give) ')
+			print("Who would you like to give to?")
+			target_name = input('> (give {} to) '.format(item_name))
+
+		if not bad_syntax:
+			item_list = find_member_by_name(items, item_name)
+			target_list = find_member_by_name(people, target_name)
+			if check_target(item_list, items, item_name) == check_target(target_list, people, target_name) == e_target_type.unique:
+				player.give(*item_list, *target_list)
 
 	world_time += 1
-		
+
 '''
 	if(command == "i"):
 		print("your inventory contains:")
