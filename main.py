@@ -78,8 +78,14 @@ while text_input != 'q':
 		bad_syntax = False
 
 		if parameters:
-			item_name = ""
-			target_name = ""
+			to_delimiter = ' to '
+			to_location = parameters.rfind(' to ')
+			if to_location != -1:
+				item_name = parameters[:to_location].strip().lower()
+				target_name = parameters[to_location+len(to_delimiter):].strip().lower()
+			else:
+				bad_syntax = True
+				print("Incorrect syntax. Try: give ITEM to TARGET")
 		else:
 			print("What would you like to give?")
 			item_name = input('> (give) ')
