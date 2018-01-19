@@ -56,7 +56,11 @@ class person:
 		events.append(event(world_time, self, e_action.tell, target))
 		print("{} told {} \"{}\" at {} o'clock.".format(self.name, target.name, utterance, world_time))
 
-people = []
+class group(list):
+	def __init__(self, member_name):
+		self.member_name = member_name
+
+people = group('person')
 people.append(person('tyler'))
 player = people[-1]
 people.append(person('john'))
