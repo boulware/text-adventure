@@ -55,12 +55,11 @@ class person:
 		print("{} told {} \"{}\" at {} o'clock.".format(self.name, target.name, utterance, world_time))
 
 people = []
-
-people.append(person("tyler"))
+people.append(person('tyler'))
 player = people[-1]
+people.append(person('john'))
+people.append(person('mary'))
 
-people.append(person("john"))
-people.append(person("mary"))
 
 def check_target(action, target, *args):
 	# (SELF) The name of this function is a bit ambiguous and/or not really describing what it does completely.	
@@ -75,8 +74,8 @@ def check_target(action, target, *args):
 		#player.kill(*target)	
 		action(*target, *args)
 
-text_input = ""
-while text_input != "q":
+text_input = ''
+while text_input != 'q':
 	text_input = input('> ')
 
 	text_input.strip()
@@ -89,7 +88,7 @@ while text_input != "q":
 
 	# Syntax:
 	#	kill TARGET
-	if command[0] == "kill":
+	if command[0] == 'kill':
 		if parameters:
 			target_name = parameters
 		if not parameters:
@@ -101,7 +100,7 @@ while text_input != "q":
 
 	# Syntax:
 	#	tell TARGET "UTTERANCE"
-	if command[0] == "tell":
+	if command[0] == 'tell':
 		bad_syntax = False
 
 		if parameters:
