@@ -1,98 +1,21 @@
-from enum import Enum, unique
 import pdb
+
+import group as m_group
+import event as m_event
+import person as m_person
+import item as m_item
 
 events = []
 world_time = 0
 
-def find_member_by_name(group, name):
-	target = [member for member in group if member.name == name]
-	return target
-
-class item:
-	def __init__(self, name, description):
-		self.name = name
-		self.description = description
-class container:
-	def __init__(self, name, capacity):
-		self.name = name
-		self.capacity = capacity
-		self.contents = []
-
-#inventory = container("inventory", 10)
-#inventory.contents.append(item("torch", "a piece of wood with an oil-soaked rag attached to one end"))
-
-@unique
-class e_action(Enum):
-	kill = 0,
-	tell = 1,
-	give = 2,
-
-class event:
-	def __init__(self, time, agent, action, patient = None, recipient = None):
-		self.agent = agent
-		self.action = action
-		self.time = time
-		self.patient = patient
-		self.recipient = recipient
-
-
-@unique
-class e_status(Enum):
-	dead = 0
-	alive = 1
-
-class person:
-	def __init__(self, name):
-		self.name = name.lower()
-		self.status = e_status.alive
-#		self.memories = [] # Maybe once we get more advanced
-	def kill(self, target):
-		if target.status == e_status.alive:
-			target.status = e_status.dead
-			events.append(event(world_time, self, e_action.kill, target))
-			print("{} killed {} at {} o'clock.".format(self.name, target.name, world_time))
-		else:
-			print("{} is already dead.".format(target.name))
-	def tell(self, target, utterance):
-		events.append(event(world_time, self, e_action.tell, target))
-		print("{} told {} \"{}\" at {} o'clock.".format(self.name, target.name, utterance, world_time))
-	def give(self, item, target):
-		events.append(event(world_time, self, e_action.give, item, target))
-		print("{} gave {} to {} at {} o'clock.".format(self.name, item.name, target.name, world_time))
-
-class group(list):
-	def __init__(self, member_title):
-		self.member_title = member_title # The general term that can be used for a member of the group (e.g., "person" for a group of people)
-
-people = group('person')
-people.append(person('tyler'))
+people = m_group.Group('person')
+people.append(m_person.Person('tyler'))
 player = people[-1]
-people.append(person('john'))
-people.append(person('mary'))
+people.append(m_person.Person('john'))
+people.append(m_person.Person('mary'))
 
-class item:
-	def __init__(self, name):
-		self.name = name
-
-items = group('item')
-items.append(item('torch'))
-
-class e_target_type(Enum):
-	null = 0, 		# No target exists with the given specs
-	ambiguous = 1,	# Multiple targets exist with the given specs
-	unique = 2,		# Exactly one target exists with the given specs
-
-def check_target(target, group, target_name):
-	target_count = len(target)
-
-	if target_count == 0:
-		print("That {} ({}) doesn't exist.".format(group.member_title, target_name))
-		return e_target_type.null
-	elif target_count > 1:
-		print("That {} name ({}) is ambiguous.".format(group.member_title, target_name))
-		return e_target_type.ambiguous
-	if target_count == 1:
-		return e_target_type.unique
+items = m_group.Group('item')
+items.append(m_item.Item('torch'))
 
 text_input = ''
 while text_input != 'q':
@@ -115,9 +38,10 @@ while text_input != 'q':
 			print("Who would you like to kill?")
 			target_name = input('> (kill) ')
 
-		target_list = find_member_by_name(people, target_name)
-		if check_target(target_list, people, target_name) == e_target_type.unique:
-			player.kill(*target_list)
+		target_list = m_group.find_member_by_name(people, target_name)
+		if m_group.check_target(target_list, people, target_name) == m_group.e_target_type.unique:
+			event = player.kill(*target_list, world_time)
+			events.append(event)
 
 	# Syntax:
 	#	tell TARGET "UTTERANCE"
@@ -143,9 +67,10 @@ while text_input != 'q':
 			utterance = input('> (tell {}) '.format(target_name))
 
 		if not bad_syntax:
-			target_list = find_member_by_name(people, target_name)
-			if check_target(target_list, people, target_name) == e_target_type.unique:
-				player.tell(*target_list, utterance)
+			target_list = m_group.find_member_by_name(people, target_name)
+			if m_group.check_target(target_list, people, target_name) == m_group.e_target_type.unique:
+				event = player.tell(*target_list, utterance, world_time)
+				events.append(event)
 
 	# Syntax:
 	#	give ITEM to TARGET
@@ -162,16 +87,10 @@ while text_input != 'q':
 			target_name = input('> (give {} to) '.format(item_name))
 
 		if not bad_syntax:
-			item_list = find_member_by_name(items, item_name)
-			target_list = find_member_by_name(people, target_name)
-			if check_target(item_list, items, item_name) == check_target(target_list, people, target_name) == e_target_type.unique:
-				player.give(*item_list, *target_list)
+			item_list = m_group.find_member_by_name(items, item_name)
+			target_list = m_group.find_member_by_name(people, target_name)
+			if m_group.check_target(item_list, items, item_name) == m_group.check_target(target_list, people, target_name) == m_group.e_target_type.unique:
+				event = player.give(*item_list, *target_list, world_time)
+				events.append(event)
 
 	world_time += 1
-
-'''
-	if(command == "i"):
-		print("your inventory contains:")
-		for item in inventory.contents:
-			print("\t" + item.name)
-'''
