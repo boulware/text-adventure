@@ -1,0 +1,35 @@
+if command[0] == action.verb:
+	bad_syntax = False
+
+	if parameters:
+		# # action-dependent stuff
+		#
+		# if(parameters are formatted correctly):
+		#	extract targets of action (patient, recipient, etc.) from parameters string
+		# else:
+		#	bad_syntax = True
+		#	print("Incorrect syntax. Try: SYNTAX")
+	else:
+		# # different action-dependent stuff
+		#
+		# for(each needed_parameter):
+		# 	prompt user for the parameter and store the input ("Whom would you like to ACTION?")
+
+	if not bad_syntax:
+		# # action-dependent
+		#
+		# for(each needed_parameter):
+		#	produce a list of all possible targets based on user input (find_member_by_name)
+		# if(all targets are uniquely specified):
+		#	perform action
+		#	add action to event history
+
+------------------------
+
+So let's list some ideas for generalizing this method.
+* a generalized parameter specifier and parser. This might be one of the harder things to do.
+* just having a list of parameters strongly associated with each action will simplify many things,
+	letting us specify various things, like what the prompt text should be or what valid syntax for the
+	particular parameters is, maybe even being able to specify more global syntax rules as well.
+* parameter list can also store information about what groups the targets can come from (people, items, etc.)
+* the action object will also be linked to a particular function, like player.kill(), player.give(), etc.
