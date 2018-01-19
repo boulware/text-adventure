@@ -5,6 +5,7 @@ class e_action(Enum):
 	kill = 0,
 	tell = 1,
 	give = 2,
+	take = 3,
 
 class Event:
 	def __init__(self, time, agent, action, patient = None, recipient = None):

@@ -99,4 +99,31 @@ while text_input != 'q':
 				event = player.give(*item_list, *target_list, world_time)
 				events.append(event)
 
+	# Syntax:
+	#	take ITEM from TARGET
+	if command[0] == 'take':
+		bad_syntax = False
+
+		if parameters:
+			from_delimiter = ' from '
+			from_location = parameters.rfind(' from ')
+			if from_location != -1:
+				item_name = parameters[:from_location].strip().lower()
+				target_name = parameters[from_location+len(from_delimiter):].strip().lower()
+			else:
+				bad_syntax = True
+				print("Incorrect syntax. Try: take ITEM from TARGET")
+		else:
+			print("What would you like to take?")
+			item_name = input('> (take) ')
+			print("Whom would you like to take it from?")
+			target_name = input('> (take {} from) '.format(item_name))
+
+		if not bad_syntax:
+			item_list = m_group.find_member_by_name(items, item_name)
+			target_list = m_group.find_member_by_name(people, target_name)
+			if m_group.check_target(item_list, items, item_name) == m_group.check_target(target_list, people, target_name) == m_group.e_target_type.unique:
+				event = player.take(*item_list, *target_list, world_time)
+				events.append(event)
+
 	world_time += 1

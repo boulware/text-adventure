@@ -33,3 +33,8 @@ class Person:
 		event = m_event.Event(time, self, m_event.e_action.give, item, target)
 		print("{} gave {} to {} at {} o'clock.".format(self.name, item.name, target.name, time))
 		return event
+
+	def take(self, item, target, time):
+		event = m_event.Event(time, self, m_event.e_action.take, item, target)
+		print("{} took {} from {} at {} o'clock.".format(self.name, item.name, target.name, time))
+		return event
