@@ -126,4 +126,17 @@ while text_input != 'q':
 				event = player.take(*item_list, *target_list, world_time)
 				events.append(event)
 
+	# Syntax:
+	#	laugh
+	if command[0] == 'laugh':
+		bad_syntax = False
+
+		if parameters:
+			bad_syntax = True
+			print("Incorrect syntax. Try: laugh")
+
+		if not bad_syntax:
+			event = player.laugh(world_time)
+			events.append(event)
+
 	world_time += 1

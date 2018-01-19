@@ -38,3 +38,8 @@ class Person:
 		event = m_event.Event(time, self, m_event.e_action.take, item, target)
 		print("{} took {} from {} at {} o'clock.".format(self.name, item.name, target.name, time))
 		return event
+
+	def laugh(self, time):
+		event = m_event.Event(time, self, m_event.e_action.laugh)
+		print("{} laughed at {} o'clock.".format(self.name, time))
+		return event
