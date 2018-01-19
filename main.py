@@ -4,6 +4,10 @@ import pdb
 events = []
 world_time = 0
 
+def find_member_by_name(group, name):
+	target = [member for member in group if member.name == name]
+	return target
+
 class item:
 	def __init__(self, name, description):
 		self.name = name
@@ -58,9 +62,6 @@ player = people[-1]
 people.append(person("john"))
 people.append(person("mary"))
 
-def find_person(group, target_name):
-	target = [person for person in people if person.name == target_name]
-	return target
 def check_target(action, target, *args):
 	# (SELF) The name of this function is a bit ambiguous and/or not really describing what it does completely.	
 	target_count = len(target)
@@ -95,7 +96,7 @@ while text_input != "q":
 			print("Who would you like to kill?")
 			target_name = input('> (kill) ')
 
-		target = find_person(people, target_name)
+		target = find_member_by_name(people, target_name)
 		check_target(player.kill, target)
 
 	# Syntax:
@@ -122,7 +123,7 @@ while text_input != "q":
 			utterance = input('> (tell {}) '.format(target_name))
 
 		if not bad_syntax:
-			target = find_person(people, target_name)
+			target = find_member_by_name(people, target_name)
 			check_target(player.tell, target, utterance)
 
 	# Syntax:
