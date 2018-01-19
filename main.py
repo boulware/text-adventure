@@ -57,8 +57,8 @@ class person:
 		print("{} told {} \"{}\" at {} o'clock.".format(self.name, target.name, utterance, world_time))
 
 class group(list):
-	def __init__(self, member_name):
-		self.member_name = member_name
+	def __init__(self, member_title):
+		self.member_title = member_title # The general term that can be used for a member of the group (e.g., "person" for a group of people)
 
 people = group('person')
 people.append(person('tyler'))
@@ -71,14 +71,14 @@ class e_target_type(Enum):
 	ambiguous = 1,	# Multiple targets exist with the given specs
 	unique = 2,		# Exactly one target exists with the given specs
 
-def check_target(target):
+def check_target(target, group, target_name):
 	target_count = len(target)
 
 	if target_count == 0:
-		print("That person ({}) doesn't exist.".format(target_name))
+		print("That {} ({}) doesn't exist.".format(group.member_title, target_name))
 		return e_target_type.null
 	elif target_count > 1:
-		print("That name ({}) is ambiguous.".format(target_name))
+		print("That {} name ({}) is ambiguous.".format(group.member_title, target_name))
 		return e_target_type.ambiguous
 	if target_count == 1:
 		return e_target_type.unique
@@ -104,9 +104,9 @@ while text_input != 'q':
 			print("Who would you like to kill?")
 			target_name = input('> (kill) ')
 
-		target = find_member_by_name(people, target_name)
-		if check_target(target) == e_target_type.unique:
-			player.kill(*target)
+		target_list = find_member_by_name(people, target_name)
+		if check_target(target_list, people, target_name) == e_target_type.unique:
+			player.kill(*target_list)
 
 	# Syntax:
 	#	tell TARGET "UTTERANCE"
@@ -132,9 +132,9 @@ while text_input != 'q':
 			utterance = input('> (tell {}) '.format(target_name))
 
 		if not bad_syntax:
-			target = find_member_by_name(people, target_name)
-			if check_target(target) == e_target_type.unique:
-				player.tell(*target, utterance)
+			target_list = find_member_by_name(people, target_name)
+			if check_target(target_list, people, target_name) == e_target_type.unique:
+				player.tell(*target_list, utterance)
 
 	# Syntax:
 	#	
