@@ -1,10 +1,10 @@
-import pdb
-
 import group as m_group
 import event as m_event
 import person as m_person
 import item as m_item
 import action as m_action
+
+import ipdb
 
 events = []
 world_time = 0
@@ -19,6 +19,9 @@ items = m_group.Group('item')
 items.append(m_item.Item('torch'))
 
 jump = m_action.Action('jump')
+hug = m_action.Action('hug TARGET')
+give = m_action.Action('give ITEM to TARGET')
+crazy = m_action.Action('crazy A to B while C and D')
 
 text_input = ''
 while text_input != 'q':
@@ -32,10 +35,31 @@ while text_input != 'q':
 	if len(command) == 2:
 		parameters = command[1]
 
+#	ipdb.set_trace()
+
 	# Syntax:
 	#	jump
 	if command[0] == 'jump':
 		event = jump.do(player, parameters, world_time)
+		if event:
+			events.append(event)
+
+	# Syntax:
+	#	hug TARGET
+	if command[0] == 'hug':
+		event = hug.do(player, parameters, world_time)
+		if event:
+			events.append(event)
+
+	# Syntax:
+	#	give ITEM to TARGET
+	if command[0] == 'give':
+		event = give.do(player, parameters, world_time)
+		if event:
+			events.append(event)
+
+	if command[0] == 'crazy':
+		event = crazy.do(player, 'A to B while C and D or E', world_time)
 		if event:
 			events.append(event)
 
