@@ -139,4 +139,7 @@ while text_input != 'q':
 			event = player.laugh(world_time)
 			events.append(event)
 
+	for i, event in enumerate(events):
+		print("event {}: {}".format(i, event.action))
+
 	world_time += 1
