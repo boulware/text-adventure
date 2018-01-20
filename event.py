@@ -8,6 +8,7 @@ class e_action(Enum):
 	give = 3,
 	take = 4,
 	laugh = 5,
+	jump = 6,
 
 class Event:
 	def __init__(self, time, agent, action, patient = None, recipient = None):

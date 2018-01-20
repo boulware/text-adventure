@@ -4,6 +4,7 @@ import group as m_group
 import event as m_event
 import person as m_person
 import item as m_item
+import action as m_action
 
 events = []
 world_time = 0
@@ -17,6 +18,8 @@ people.append(m_person.Person('mary'))
 items = m_group.Group('item')
 items.append(m_item.Item('torch'))
 
+jump = m_action.Action('jump', m_event.e_action.jump, 'jump')
+
 text_input = ''
 while text_input != 'q':
 	text_input = input('> ')
@@ -28,6 +31,13 @@ while text_input != 'q':
 	parameters = []
 	if len(command) == 2:
 		parameters = command[1]
+
+	# Syntax:
+	#	jump
+	if command[0] == 'jump':
+		event = jump.do(player, parameters, world_time)
+		if event:
+			events.append(event)
 
 	# Syntax:
 	#	kill TARGET
