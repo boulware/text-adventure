@@ -2,11 +2,12 @@ from enum import Enum, unique
 
 @unique
 class e_action(Enum):
-	kill = 0,
-	tell = 1,
-	give = 2,
-	take = 3,
-	laugh = 4,
+	none = 0,
+	kill = 1,
+	tell = 2,
+	give = 3,
+	take = 4,
+	laugh = 5,
 
 class Event:
 	def __init__(self, time, agent, action, patient = None, recipient = None):
