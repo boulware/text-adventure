@@ -5,13 +5,10 @@ class Parameter:
 	def __init__(self, user_query):
 		self.user_query = user_query
 
-
 class Action:
-	def __init__(self, command, ID, syntax):
-		self.command = command
-		self.ID = ID
+	def __init__(self, syntax):
 		self.syntax = syntax
-		self.parameters = []
+		self.command, self.parameters = find_parameters(syntax)
 
 	def _check_preconditions(self, agent, patient):
 		if not agent:
@@ -32,6 +29,18 @@ class Action:
 		if not bad_syntax:
 			if self._check_preconditions(agent, None):
 				self._set_postconditions(agent, None)
-				return m_event.Event(time, agent, self.ID)
+				return m_event.Event(time, agent, self)
 
 		return None
+
+def find_parameters(syntax):
+	command = ''
+	parameters = []
+	for index, word in enumerate(syntax.split()):
+		if index == 0:
+			command = word
+
+		if word.isupper():
+			parameters.append(word)
+
+	return command, parameters

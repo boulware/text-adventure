@@ -18,7 +18,7 @@ people.append(m_person.Person('mary'))
 items = m_group.Group('item')
 items.append(m_item.Item('torch'))
 
-jump = m_action.Action('jump', m_event.e_action.jump, 'jump')
+jump = m_action.Action('jump')
 
 text_input = ''
 while text_input != 'q':
