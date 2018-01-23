@@ -21,45 +21,58 @@ items.append(m_item.Item('torch'))
 jump = m_action.Action('jump')
 hug = m_action.Action('hug TARGET')
 give = m_action.Action('give ITEM to TARGET')
+walk = m_action.Action('walk to LOCATION')
 crazy = m_action.Action('crazy A to B while C and D')
+doubleref = m_action.Action('doubleref A to B C and D')
+doublekw = m_action.Action('doublekw A to B and or C for D')
+emptycmd = m_action.Action('')
 
 text_input = ''
 while text_input != 'q':
 	text_input = input('> ')
+	text_input = text_input.strip() # (SELF) This is an important line. Without it, our regex will break. Think carefully before removing it.
+	text_input = text_input.lower()
 
-	text_input.strip()
-	text_input.lower()
-	command = text_input.split(' ', 1)
-	action = command[0]
-	parameters = []
-	if len(command) == 2:
-		parameters = command[1]
+	command, _, arguments = text_input.partition(' ')
 
-#	ipdb.set_trace()
+	#print("command=\'{}\'; arguments=\'{}\'".format(command, arguments))
 
 	# Syntax:
 	#	jump
-	if command[0] == 'jump':
-		event = jump.do(player, parameters, world_time)
+	if command == 'jump':
+		event = jump.do(player, text_input, world_time)
 		if event:
 			events.append(event)
 
 	# Syntax:
 	#	hug TARGET
-	if command[0] == 'hug':
-		event = hug.do(player, parameters, world_time)
+	if command == 'hug':
+		event = hug.do(player, text_input, world_time)
 		if event:
 			events.append(event)
 
 	# Syntax:
 	#	give ITEM to TARGET
-	if command[0] == 'give':
-		event = give.do(player, parameters, world_time)
+	if command == 'give':
+		event = give.do(player, text_input, world_time)
 		if event:
 			events.append(event)
 
-	if command[0] == 'crazy':
-		event = crazy.do(player, 'A to B while C and D or E', world_time)
+	if command == 'walk':
+		event = walk.do(player, text_input, world_time)
+
+	if command == 'crazy':
+		event = crazy.do(player, 'crazy A to B while C and D or E', world_time)
+		if event:
+			events.append(event)
+
+	if command == 'doubleref':
+		event = doubleref.do(player, 'doubleref A to B C and D', world_time)
+		if event:
+			events.append(event)
+
+	if command == 'doublekw':
+		event = doublekw.do(player, 'doublekw A to B and or C for D', world_time)
 		if event:
 			events.append(event)
 
@@ -173,7 +186,7 @@ while text_input != 'q':
 #			event = player.laugh(world_time)
 #			events.append(event)
 
-	for i, event in enumerate(events):
-		print("event {}: {}".format(i, event.action))
+#	for i, event in enumerate(events):
+#		print("event {}: {}".format(i, event.action))
 
 	world_time += 1
