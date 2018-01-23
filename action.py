@@ -19,8 +19,7 @@ class Parameter:
 class Action:
 	def __init__(self, syntax):
 		self.syntax = syntax
-		#self.parameters = find_parameters(syntax)
-		self.regex = find_regex(syntax)
+		self.name, self.regex = find_regex(syntax)
 
 	def _check_preconditions(self, agent, patient):
 		if not agent:
@@ -38,6 +37,7 @@ class Action:
 		if not match:
 			print("Invalid syntax. Try: \'{}\'".format(self.syntax))
 			print("Regex pattern: \'{}\'".format(self.regex.pattern))
+			bad_syntax = True
 
 		if not bad_syntax:
 			if self._check_preconditions(agent, None):
@@ -47,16 +47,21 @@ class Action:
 		return None
 
 def find_regex(syntax):
+	command = ''
 	pattern = ''
 	first = True
 	for word in syntax.split():
 		if first == True:
 			first = False
 			pattern += word
+			command = word
 		elif word.isupper():
 			pattern += '\s+(.*)'
 		elif word.islower():
 			pattern += '\s+' + word
 
+	if not pattern:
+		print("Empty syntax encountered.")
+
 	#print("syntax=\'{}\'; pattern=\'{}\'".format(syntax, pattern))
-	return re.compile(pattern)
+	return command, re.compile(pattern)

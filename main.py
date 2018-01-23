@@ -18,14 +18,23 @@ people.append(m_person.Person('mary'))
 items = m_group.Group('item')
 items.append(m_item.Item('torch'))
 
-jump = m_action.Action('jump')
-hug = m_action.Action('hug TARGET')
-give = m_action.Action('give ITEM to TARGET')
-walk = m_action.Action('walk to LOCATION')
-crazy = m_action.Action('crazy A to B while C and D')
-doubleref = m_action.Action('doubleref A to B C and D')
-doublekw = m_action.Action('doublekw A to B and or C for D')
-emptycmd = m_action.Action('')
+actions = m_group.Group('action')
+
+actions.append(m_action.Action('jump'))
+actions.append(m_action.Action('hug TARGET'))
+actions.append(m_action.Action('give ITEM to TARGET'))
+actions.append(m_action.Action('walk to LOCATION'))
+actions.append(m_action.Action('crazy A to B while C and D'))
+actions.append(m_action.Action('doubleref A to B C and D'))
+actions.append(m_action.Action('doublekw A to B and or C for D'))
+#actions.append(m_action.Action('')) # (NOTE) Don't forget about these empty syntaxes. I need a way to properly deal with it.
+
+# Old actions reimplemented with generic action implementation
+actions.append(m_action.Action('kill TARGET'))
+# (NOTE) This is a shortcut implementation for: tell TARGET "UTTERANCE". Shortcutted because I'm not sure how I'll handle this yet.
+actions.append(m_action.Action('tell TARGET that UTTERANCE'))
+actions.append(m_action.Action('take ITEM from TARGET'))
+actions.append(m_action.Action('laugh'))
 
 text_input = ''
 while text_input != 'q':
@@ -37,44 +46,55 @@ while text_input != 'q':
 
 	#print("command=\'{}\'; arguments=\'{}\'".format(command, arguments))
 
-	# Syntax:
-	#	jump
-	if command == 'jump':
-		event = jump.do(player, text_input, world_time)
-		if event:
-			events.append(event)
+	for action in actions:
+		if command == action.name:
+			event = action.do(player, text_input, world_time)
+			if event:
+				events.append(event)
+				for i, event in enumerate(events):
+					print("event {}: {}".format(i, event.action.name))
 
-	# Syntax:
-	#	hug TARGET
-	if command == 'hug':
-		event = hug.do(player, text_input, world_time)
-		if event:
-			events.append(event)
 
-	# Syntax:
-	#	give ITEM to TARGET
-	if command == 'give':
-		event = give.do(player, text_input, world_time)
-		if event:
-			events.append(event)
-
-	if command == 'walk':
-		event = walk.do(player, text_input, world_time)
-
-	if command == 'crazy':
-		event = crazy.do(player, 'crazy A to B while C and D or E', world_time)
-		if event:
-			events.append(event)
-
-	if command == 'doubleref':
-		event = doubleref.do(player, 'doubleref A to B C and D', world_time)
-		if event:
-			events.append(event)
-
-	if command == 'doublekw':
-		event = doublekw.do(player, 'doublekw A to B and or C for D', world_time)
-		if event:
-			events.append(event)
+#	# Syntax:
+#	#	jump
+#	if command == 'jump':
+#		event = jump.do(player, text_input, world_time)
+#		if event:
+#			events.append(event)
+#
+#	# Syntax:
+#	#	hug TARGET
+#	if command == 'hug':
+#		event = hug.do(player, text_input, world_time)
+#		if event:
+#			events.append(event)
+#
+#	# Syntax:
+#	#	give ITEM to TARGET
+#	if command == 'give':
+#		event = give.do(player, text_input, world_time)
+#		if event:
+#			events.append(event)
+#
+#	# Syntax:
+#	#	walk to LOCATION
+#	if command == 'walk':
+#		event = walk.do(player, text_input, world_time)
+#
+#	if command == 'crazy':
+#		event = crazy.do(player, 'crazy A to B while C and D or E', world_time)
+#		if event:
+#			events.append(event)
+#
+#	if command == 'doubleref':
+#		event = doubleref.do(player, 'doubleref A to B C and D', world_time)
+#		if event:
+#			events.append(event)
+#
+#	if command == 'doublekw':
+#		event = doublekw.do(player, 'doublekw A to B and or C for D', world_time)
+#		if event:
+#			events.append(event)
 
 	# Syntax:
 	#	kill TARGET
@@ -185,8 +205,5 @@ while text_input != 'q':
 #		if not bad_syntax:
 #			event = player.laugh(world_time)
 #			events.append(event)
-
-#	for i, event in enumerate(events):
-#		print("event {}: {}".format(i, event.action))
 
 	world_time += 1
