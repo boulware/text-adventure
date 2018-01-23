@@ -1,40 +1,52 @@
-import group as m_group
-import event as m_event
-import person as m_person
-import item as m_item
-import action as m_action
+from group import Group
+from person import Person
+from item import Item
+from action import Action
+from verb import Verb
 
 import ipdb
 
 events = []
 world_time = 0
 
-people = m_group.Group('person')
-people.append(m_person.Person('tyler'))
+people = Group('person')
+people.append(Person('tyler'))
 player = people[-1]
-people.append(m_person.Person('john'))
-people.append(m_person.Person('mary'))
+people.append(Person('john'))
+people.append(Person('mary'))
 
-items = m_group.Group('item')
-items.append(m_item.Item('torch'))
+items = Group('item')
+items.append(Item('torch'))
 
-actions = m_group.Group('action')
+verbs = Group('verb')
+verbs.append(Verb('jump', 'jumped'))
+verbs.append(Verb('hug', 'hugged'))
+verbs.append(Verb('give', 'gave'))
+verbs.append(Verb('walk', 'walked'))
+verbs.append(Verb('crazy', 'crazied'))
+verbs.append(Verb('doubleref', 'doublereffed'))
+verbs.append(Verb('doublekw', 'doublekwed'))
+verbs.append(Verb('kill', 'killed'))
+verbs.append(Verb('tell', 'told'))
+verbs.append(Verb('take', 'took'))
+verbs.append(Verb('laugh', 'laughed'))
 
-actions.append(m_action.Action('jump'))
-actions.append(m_action.Action('hug TARGET'))
-actions.append(m_action.Action('give ITEM to TARGET'))
-actions.append(m_action.Action('walk to LOCATION'))
-actions.append(m_action.Action('crazy A to B while C and D'))
-actions.append(m_action.Action('doubleref A to B C and D'))
-actions.append(m_action.Action('doublekw A to B and or C for D'))
-#actions.append(m_action.Action('')) # (NOTE) Don't forget about these empty syntaxes. I need a way to properly deal with it.
+actions = Group('action')
+actions.append(Action('jump'))
+actions.append(Action('hug TARGET'))
+actions.append(Action('give ITEM to TARGET'))
+actions.append(Action('walk to LOCATION'))
+actions.append(Action('crazy A to B while C and D'))
+actions.append(Action('doubleref A to B C and D'))
+actions.append(Action('doublekw A to B and or C for D'))
+#actions.append(Action('')) # (NOTE) Don't forget about these empty syntaxes. I need a way to properly deal with it.
 
 # Old actions reimplemented with generic action implementation
-actions.append(m_action.Action('kill TARGET'))
+actions.append(Action('kill TARGET'))
 # (NOTE) This is a shortcut implementation for: tell TARGET "UTTERANCE". Shortcutted because I'm not sure how I'll handle this yet.
-actions.append(m_action.Action('tell TARGET that UTTERANCE'))
-actions.append(m_action.Action('take ITEM from TARGET'))
-actions.append(m_action.Action('laugh'))
+actions.append(Action('tell TARGET that UTTERANCE'))
+actions.append(Action('take ITEM from TARGET'))
+actions.append(Action('laugh'))
 
 text_input = ''
 while text_input != 'q':
@@ -42,17 +54,18 @@ while text_input != 'q':
 	text_input = text_input.strip() # (SELF) This is an important line. Without it, our regex will break. Think carefully before removing it.
 	text_input = text_input.lower()
 
-	command, _, arguments = text_input.partition(' ')
+	command, delim, arguments = text_input.partition(' ')
+	arguments = delim + arguments # (TEMP) messy fix for some weird stuff going on in the Action regex.
 
 	#print("command=\'{}\'; arguments=\'{}\'".format(command, arguments))
 
 	for action in actions:
 		if command == action.name:
-			event = action.do(player, text_input, world_time)
+			event = action.do(player, arguments, world_time, verbs) # (TEMP) throwing verbs on as an arg to get back old functionality with general action template
 			if event:
 				events.append(event)
 				for i, event in enumerate(events):
-					print("event {}: {}".format(i, event.action.name))
+					pass#print("event {}: {}".format(i, event.action.name))
 
 
 #	# Syntax:

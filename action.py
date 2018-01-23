@@ -1,6 +1,7 @@
 from enum import Enum, unique
 
-import event as m_event
+from event import Event
+import group as m_group
 import ipdb
 from collections import namedtuple
 
@@ -19,7 +20,8 @@ class Parameter:
 class Action:
 	def __init__(self, syntax):
 		self.syntax = syntax
-		self.name, self.regex = find_regex(syntax)
+		self.command, self.regex = find_regex(syntax)
+		self.name = self.command # (TEMP) holdover for Group functions using "name" instead of something more generic
 
 	def _check_preconditions(self, agent, patient):
 		if not agent:
@@ -30,19 +32,25 @@ class Action:
 	def _set_postconditions(self, agent, patient):
 		pass
 
-	def do(self, agent, argument_string, time):
+	def do(self, agent, argument_string, time, verbs):
 		bad_syntax = False
 
 		match = self.regex.fullmatch(argument_string)
 		if not match:
 			print("Invalid syntax. Try: \'{}\'".format(self.syntax))
 			print("Regex pattern: \'{}\'".format(self.regex.pattern))
+			print("Argument string: \'{}\'".format(argument_string))
 			bad_syntax = True
 
 		if not bad_syntax:
 			if self._check_preconditions(agent, None):
 				self._set_postconditions(agent, None)
-				return m_event.Event(time, agent, self)
+				verb = m_group.find_member_by_name(verbs, self.name)
+				if verb:
+					print("{} {}{} at {} o'clock.".format(agent.name, verb[0].past, argument_string, time))
+				else:
+					print("Verb not found for command \'{}\'".format(self.command))
+				return Event(time, agent, self)
 
 		return None
 
@@ -53,14 +61,15 @@ def find_regex(syntax):
 	for word in syntax.split():
 		if first == True:
 			first = False
-			pattern += word
 			command = word
 		elif word.isupper():
 			pattern += '\s+(.*)'
 		elif word.islower():
 			pattern += '\s+' + word
 
-	if not pattern:
+	pattern = pattern.strip()
+
+	if not command:
 		print("Empty syntax encountered.")
 
 	#print("syntax=\'{}\'; pattern=\'{}\'".format(syntax, pattern))
