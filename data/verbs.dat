@@ -1,48 +1,76 @@
 {
 	"verbs": [
 		{
-			"imperative": "jump",
-			"past": "jumped"
+			"lemma": "jump",
+			"inflection": "jumps",
+			"syntax": "AGENT *",
+			"is_stative": false
 		},
 		{
-			"imperative": "hug",
-			"past": "hugged"
+			"lemma": "hug",
+			"inflection": "hugs",
+			"syntax": "AGENT * PATIENT",
+			"is_stative": false
 		},
 		{
-			"imperative": "give",
-			"past": "gave"
+			"lemma": "give",
+			"inflection": "gives",
+			"syntax": "AGENT * PATIENT to RECIPIENT",
+			"is_stative": false
 		},
 		{
-			"imperative": "walk",
-			"past": "walked"
+			"lemma": "walk",
+			"inflection": "walks",
+			"syntax": "AGENT * to LOCATION",
+			"is_stative": false
 		},
 		{
-			"imperative": "crazy",
-			"past": "crazied"
+			"lemma": "crazy",
+			"inflection": "crazys",
+			"syntax": "AGENT * A to B while C and D",
+			"is_stative": false
 		},
 		{
-			"imperative": "doubleref",
-			"past": "doublereffed"
+			"lemma": "doubleref",
+			"inflection": "doublerefs",
+			"syntax": "AGENT * A to B C and D",
+			"is_stative": false
 		},
 		{
-			"imperative": "doublekw",
-			"past": "doublekwed"
+			"lemma": "doublekw",
+			"inflection": "doublekws",
+			"syntax": "AGENT * A to B and or C for D",
+			"is_stative": false
 		},
 		{
-			"imperative": "kill",
-			"past": "killed"
+			"lemma": "kill",
+			"inflection": "kills",
+			"syntax": "AGENT * PATIENT",
+			"is_stative": false
 		},
 		{
-			"imperative": "tell",
-			"past": "told"
+			"lemma": "tell",
+			"inflection": "tells",
+			"syntax": "AGENT * PATIENT that UTTERANCE",
+			"is_stative": false
 		},
 		{
-			"imperative": "take",
-			"past": "took"
+			"lemma": "take",
+			"inflection": "takes",
+			"syntax": "AGENT * PATIENT from RECIPIENT",
+			"is_stative": false
 		},
 		{
-			"imperative": "laugh",
-			"past": "laughed"
+			"lemma": "laugh",
+			"inflection": "laughs",
+			"syntax": "AGENT *",
+			"is_stative": false
+		},
+		{
+			"lemma": "have",
+			"inflection": "has",
+			"syntax": "AGENT * PATIENT",
+			"is_stative": true
 		}
 	]
 }

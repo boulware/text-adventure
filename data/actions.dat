@@ -1,40 +1,4 @@
 {
 	"actions": [
-		{
-			"syntax": "jump"
-		},
-		{
-			"syntax": "hug TARGET"
-		},
-		{
-			"syntax": "give ITEM to TARGET"
-		},
-		{
-			"syntax": "walk to LOCATION"
-		},
-		{
-			"syntax": "crazy A to B while C and D"
-		},
-		{
-			"syntax": "doubleref A to B C and D"
-		},
-		{
-			"syntax": "doublekw A to B and or C for D"
-		},
-		{
-			"syntax": "steal TARGET"
-		},
-		{
-			"syntax": "kill TARGET"
-		},
-		{
-			"syntax": "tell TARGET that UTTERANCE"
-		},
-		{
-			"syntax": "take ITEM from TARGET"
-		},
-		{
-			"syntax": "laugh"
-		}
 	]
 }

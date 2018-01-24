@@ -4,18 +4,20 @@ from person import Person
 from item import Item
 from action import Action
 from verb import Verb
+import verb as m_verb
 from state import State
+from event import Event
 
 import ipdb
 
 events = []
+states = []
 world_time = 0
 
 people = Group('person', Person, 'data/people.dat')
 items = Group('item', Item, 'data/items.dat')
 verbs = Group('verb', Verb, 'data/verbs.dat')
 actions = Group('action', Action, 'data/actions.dat')
-states = Group('state', State, 'data/states.dat')
 
 player = m_group.find_member_by_name(people, 'tyler')
 
@@ -30,16 +32,21 @@ while text_input != 'q':
 	text_input = text_input.lower()
 
 	command, delim, arguments = text_input.partition(' ')
-	arguments = delim + arguments # (TEMP) messy fix for some weird stuff going on in the Action regex.
+	text_input = 'tyler ' + text_input
 
-	#print("command=\'{}\'; arguments=\'{}\'".format(command, arguments))
-
-	for action in actions:
-		if command == action.name:
-			event = action.do(player, arguments, world_time, verbs) # (TEMP) throwing verbs on as an arg to get back old functionality with general action template
-			if event:
-				events.append(event)
+	for verb in verbs:
+		if command == verb.lemma:
+			result = m_verb.do(verb, text_input, world_time) # (TEMP) throwing verbs on as an arg to get back old functionality with general action template
+			if type(result) is Event:
+				events.append(result)
+				print("Events:")
 				for i, event in enumerate(events):
-					pass#print("event {}: {}".format(i, event.action.name))
+					print("event {}: {}".format(i, event.verb.lemma))
+			# (CONC) Is it really necessary to check for stative verbs in a function called "do()"?
+			if type(result) is State:
+				states.append(result)
+				print("States:")
+				for i, state in enumerate(states):
+					print("state {}: {}".format(i, state.verb.lemma))
 
 	world_time += 1
