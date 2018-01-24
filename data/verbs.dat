@@ -1,0 +1,48 @@
+{
+	"verbs": [
+		{
+			"imperative": "jump",
+			"past": "jumped"
+		},
+		{
+			"imperative": "hug",
+			"past": "hugged"
+		},
+		{
+			"imperative": "give",
+			"past": "gave"
+		},
+		{
+			"imperative": "walk",
+			"past": "walked"
+		},
+		{
+			"imperative": "crazy",
+			"past": "crazied"
+		},
+		{
+			"imperative": "doubleref",
+			"past": "doublereffed"
+		},
+		{
+			"imperative": "doublekw",
+			"past": "doublekwed"
+		},
+		{
+			"imperative": "kill",
+			"past": "killed"
+		},
+		{
+			"imperative": "tell",
+			"past": "told"
+		},
+		{
+			"imperative": "take",
+			"past": "took"
+		},
+		{
+			"imperative": "laugh",
+			"past": "laughed"
+		}
+	]
+}

@@ -1,10 +1,30 @@
 from enum import Enum, unique
+import json
 
 class Group(list):
-	def __init__(self, member_title):
+	def __init__(self, member_title, member_class, filepath):
 		self.member_title = member_title # The general term that can be used for a member of the group (e.g., "person" for a group of people)
+		self.member_class = member_class
 
+		with open(filepath) as file:
+			data = json.load(file)
+
+			for _, members in data.items():
+				for member in members:
+					try:
+						self.append(member_class(**member))
+					except TypeError:
+						print("Invalid {} encountered in {}.".format(member_title, filepath))
+
+# (TEMP) This is a workaround to return only a single (first found) member intead of the more generic list return of find_members_by_name()
 def find_member_by_name(group, name):
+	for member in group:
+		if member.name == name:
+			return member
+
+	print("Unable to find member {} in group {}.".format(name, group.member_title))
+
+def find_members_by_name(group, name):
 	target = [member for member in group if member.name == name]
 	return target
 

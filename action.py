@@ -3,7 +3,6 @@ from enum import Enum, unique
 from event import Event
 import group as m_group
 import ipdb
-from collections import namedtuple
 
 import re
 
@@ -47,7 +46,7 @@ class Action:
 				self._set_postconditions(agent, None)
 				verb = m_group.find_member_by_name(verbs, self.name)
 				if verb:
-					print("{} {}{} at {} o'clock.".format(agent.name, verb[0].past, argument_string, time))
+					print("{} {}{} at {} o'clock.".format(agent.name, verb.past, argument_string, time))
 				else:
 					print("Verb not found for command \'{}\'".format(self.command))
 				return Event(time, agent, self)
@@ -63,14 +62,14 @@ def find_regex(syntax):
 			first = False
 			command = word
 		elif word.isupper():
-			pattern += '\s+(.*)'
+			pattern += '\s+(?P<{}>.*)'.format(word)
 		elif word.islower():
 			pattern += '\s+' + word
 
 	pattern = pattern.strip()
 
 	if not command:
-		print("Empty syntax encountered.")
+		print("Empty syntax encountered.") # (TODO) This should probably be dealt with in a better way.
 
 	#print("syntax=\'{}\'; pattern=\'{}\'".format(syntax, pattern))
 	return command, re.compile(pattern)

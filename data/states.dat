@@ -1,0 +1,10 @@
+{
+	"states": [
+		{
+			"name": "john has torch"
+		},
+		{
+			"name": "mary wants torch"
+		}
+	]
+}
