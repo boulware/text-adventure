@@ -1,12 +1,16 @@
 import re
 
 import group as m_group
+from state import State
+from event import Event
 
 class Verb:
-	def __init__(self, lemma, inflection, syntax):
+	def __init__(self, lemma, inflection, syntax, is_stative):
 		self.name = self.lemma = lemma
 		self.inflection = inflection
 		self.syntax = syntax
+		self.is_stative = is_stative
+
 		self.regex = find_regex(syntax)
 
 
@@ -20,6 +24,13 @@ def do(verb, action_string, time):
 		print("action string: \'{}\'".format(action_string))
 		bad_syntax = True
 
+	# (NOTE) agent, patient, recipient is kind of cryptic. It might be better
+	# in the long run to switch to some thing more generic, but it could also
+	# be a useful classification for pre- and post-conditions
+	agent = None
+	patient = None
+	recipient = None
+
 	if not bad_syntax:
 		event_string = ''
 		first = True
@@ -28,16 +39,26 @@ def do(verb, action_string, time):
 				event_string += ' {}'.format(verb.inflection)
 			elif word.isupper():
 				event_string += ' {}'.format(match.group(word))
+
+				if word == 'AGENT':
+					agent = word
+				if word == 'PATIENT':
+					patient = word
+				if word == 'RECIPIENT':
+					recipient = word
 			elif word.islower():
 				event_string += ' {}'.format(word)
 
 			if first:
 				first = False
-				event_string = event_string[1:]
+				event_string = event_string[1:] # (TODO) Fix this hack that removes leading space only on first term
 
-		#print("{} {}{} at {} o'clock.".format(agent.name, verb.past, argument_string, time))
-		print("{} at {} o'clock.".format(event_string, time))
-		#return Event(time, agent, self)
+		if verb.is_stative:
+			print("{}.".format(event_string))
+			return State(agent, verb, patient) # (TODO) support patient and further params
+		else:
+			print("{} at {} o'clock.".format(event_string, time))
+			return Event(time, agent, verb, patient, recipient)
 
 	return None
 
@@ -55,12 +76,12 @@ def find_regex(syntax):
 		if first:
 			first = False
 			pattern = pattern[len('\s+'):] # (TEMP) Get rid of \s+ if it's the first element.
-			print(pattern)
+			#print(pattern)
 
 	pattern = pattern.strip()
 
 	if not pattern:
 		print("Empty syntax encountered.") # (TODO) This should probably be dealt with in a better way.
 
-	print("syntax=\'{}\'; pattern=\'{}\'".format(syntax, pattern))
+	#print("syntax=\'{}\'; pattern=\'{}\'".format(syntax, pattern))
 	return re.compile(pattern)
