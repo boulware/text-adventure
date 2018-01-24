@@ -4,6 +4,7 @@ from person import Person
 from item import Item
 from action import Action
 from verb import Verb
+import verb as m_verb
 from state import State
 
 import ipdb
@@ -28,15 +29,17 @@ while text_input != 'q':
 	text_input = input('> ')
 	text_input = text_input.strip() # (SELF) This is an important line. Without it, our regex will break. Think carefully before removing it.
 	text_input = text_input.lower()
+	#text_input = 'tyler ' + text_input
 
 	command, delim, arguments = text_input.partition(' ')
+	text_input = 'tyler ' + text_input
 	arguments = delim + arguments # (TEMP) messy fix for some weird stuff going on in the Action regex.
 
 	#print("command=\'{}\'; arguments=\'{}\'".format(command, arguments))
 
-	for action in actions:
-		if command == action.name:
-			event = action.do(player, arguments, world_time, verbs) # (TEMP) throwing verbs on as an arg to get back old functionality with general action template
+	for verb in verbs:
+		if command == verb.lemma:
+			event = m_verb.do(verb, text_input, world_time) # (TEMP) throwing verbs on as an arg to get back old functionality with general action template
 			if event:
 				events.append(event)
 				for i, event in enumerate(events):

@@ -1,10 +1,14 @@
 {
 	"states": [
 		{
-			"name": "john has torch"
+			"agent": "john",
+			"verb": "have",
+			"patient": "torch"
 		},
 		{
-			"name": "mary wants torch"
+			"agent": "mary",
+			"verb": "want",
+			"patient": "torch"
 		}
 	]
 }
