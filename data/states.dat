@@ -1,14 +1,18 @@
 {
 	"states": [
 		{
-			"agent": "john",
-			"verb": "have",
-			"patient": "torch"
+			"verb_string": "have",		
+			"roles": {
+				"agent": "john",
+				"patient": "a torch"
+			}
 		},
 		{
-			"agent": "mary",
-			"verb": "want",
-			"patient": "torch"
+			"verb_string": "want",		
+			"roles": {
+				"agent": "mary",
+				"patient": "a torch"
+			}
 		}
 	]
 }

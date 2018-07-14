@@ -2,7 +2,7 @@ import re
 
 import group as m_group
 from state import State
-from event import Event
+import event as m_event
 
 class Verb:
 	def __init__(self, lemma, inflection, syntax, is_stative):
@@ -11,10 +11,12 @@ class Verb:
 		self.syntax = syntax
 		self.is_stative = is_stative
 
-		self.regex = find_regex(syntax)
+		self.regex = find_regex(self, syntax)
 
 
-def do(verb, action_string, time):
+def do(verb, action_string, time, verbs_group):
+	print("action_string={}".format(action_string))
+
 	bad_syntax = False
 
 	match = verb.regex.fullmatch(action_string)
@@ -27,47 +29,38 @@ def do(verb, action_string, time):
 	# (NOTE) agent, patient, recipient is kind of cryptic. It might be better
 	# in the long run to switch to some thing more generic, but it could also
 	# be a useful classification for pre- and post-conditions
-	agent = None
-	patient = None
-	recipient = None
 
 	if not bad_syntax:
-		event_string = ''
-		first = True
-		for word in verb.syntax.split():
-			if word == "*":
-				event_string += ' {}'.format(verb.inflection)
-			elif word.isupper():
-				event_string += ' {}'.format(match.group(word))
+		params = match.groupdict()
+		roles = {i:params[i] for i in params if i != 'VERB'}
 
-				if word == 'AGENT':
-					agent = word
-				if word == 'PATIENT':
-					patient = word
-				if word == 'RECIPIENT':
-					recipient = word
-			elif word.islower():
-				event_string += ' {}'.format(word)
-
-			if first:
-				first = False
-				event_string = event_string[1:] # (TODO) Fix this hack that removes leading space only on first term
+		event_string = sub_roles(verb, roles)
 
 		if verb.is_stative:
 			print("{}.".format(event_string))
-			return State(agent, verb, patient) # (TODO) support patient and further params
+			return State(verb.lemma, roles, verbs_group=verbs_group) # (TODO) Hacky solution using verb.lemma to have cross-support with file loading
 		else:
 			print("{} at {} o'clock.".format(event_string, time))
-			return Event(time, agent, verb, patient, recipient)
+			return m_event.Event(time, verb, **roles)
 
 	return None
 
-def find_regex(syntax):
+def sub_roles(verb, roles):
+	subbed_string = verb.syntax
+
+	subbed_string = re.sub('\*', verb.inflection, subbed_string)
+	for role_name, role_value in roles.items():
+		if role_value:
+			subbed_string = re.sub(role_name.upper(), role_value, subbed_string)
+
+	return subbed_string	
+
+def find_regex(verb, syntax):
 	pattern = ''
 	first = True
 	for word in syntax.split():
 		if word == "*":
-			pattern += '\s+(?P<VERB>.*)' # (TODO) Change the syntax to allow direct writing of the verb form in intead of '*' so it reads more naturally.
+			pattern += '\s+(?P<VERB>{})'.format(verb.lemma) # (TODO) Change the syntax to allow direct writing of the verb form in instead of '*' so it reads more naturally.
 		elif word.isupper():
 			pattern += '\s+(?P<{}>.*)'.format(word)
 		elif word.islower():
@@ -76,12 +69,10 @@ def find_regex(syntax):
 		if first:
 			first = False
 			pattern = pattern[len('\s+'):] # (TEMP) Get rid of \s+ if it's the first element.
-			#print(pattern)
 
 	pattern = pattern.strip()
 
 	if not pattern:
 		print("Empty syntax encountered.") # (TODO) This should probably be dealt with in a better way.
 
-	#print("syntax=\'{}\'; pattern=\'{}\'".format(syntax, pattern))
 	return re.compile(pattern)

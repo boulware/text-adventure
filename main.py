@@ -8,18 +8,15 @@ import verb as m_verb
 from state import State
 from event import Event
 
-import ipdb
+from world import World
+import world as m_world
 
 events = []
-states = []
 world_time = 0
 
-people = Group('person', Person, 'data/people.dat')
-items = Group('item', Item, 'data/items.dat')
-verbs = Group('verb', Verb, 'data/verbs.dat')
-actions = Group('action', Action, 'data/actions.dat')
+world = World()
 
-player = m_group.find_member_by_name(people, 'tyler')
+player = m_group.find_member_by_name(world.people, 'tyler')
 
 # (TEST) test for unfound verbs in unit tests
 # (TODO) Don't forget about these empty syntaxes. I need a way to properly deal with it.
@@ -32,21 +29,29 @@ while text_input != 'q':
 	text_input = text_input.lower()
 
 	command, delim, arguments = text_input.partition(' ')
+	if command == ',?':
+		for verb in world.verbs:
+			print(verb.lemma + ' [' + verb.syntax + ']')
+	if command == ',q':
+		break
+	if command == ',s':
+		m_world.print_states(world)
+	if command == ',e':
+		m_world.print_events(world)
+	if command == ',t':
+		world_time += 1
+
 	text_input = 'tyler ' + text_input
 
-	for verb in verbs:
+	for verb in world.verbs:
 		if command == verb.lemma:
-			result = m_verb.do(verb, text_input, world_time) # (TEMP) throwing verbs on as an arg to get back old functionality with general action template
+			world_time += 1
+
+			result = m_verb.do(verb, text_input, world_time, world.verbs)
 			if type(result) is Event:
-				events.append(result)
-				print("Events:")
-				for i, event in enumerate(events):
-					print("event {}: {}".format(i, event.verb.lemma))
+				world.events.append(result)
+				m_world.print_events(world)
 			# (CONC) Is it really necessary to check for stative verbs in a function called "do()"?
 			if type(result) is State:
-				states.append(result)
-				print("States:")
-				for i, state in enumerate(states):
-					print("state {}: {}".format(i, state.verb.lemma))
-
-	world_time += 1
+				world.states.append(result)
+				m_world.print_states(world)
