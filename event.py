@@ -5,7 +5,7 @@ import verb as m_verb
 
 class Event:
 	#def __init__(self, time, verb, agent, patient = None, recipient = None):
-	def __init__(self, time, verb, **roles):
+	def __init__(self, time, verb, roles):
 		self.time = time
 		self.verb = verb
 		self.roles = roles

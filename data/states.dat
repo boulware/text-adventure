@@ -1,17 +1,24 @@
 {
 	"states": [
 		{
-			"verb_string": "have",		
+			"verb_string": "be",
 			"roles": {
 				"agent": "john",
-				"patient": "a torch"
+				"complement": "alive"
 			}
 		},
 		{
-			"verb_string": "want",		
+			"verb_string": "be",
 			"roles": {
 				"agent": "mary",
-				"patient": "a torch"
+				"complement": "alive"
+			}
+		},
+		{
+			"verb_string": "can",
+			"roles": {
+				"agent": "tyler",
+				"complement": "jump"
 			}
 		}
 	]

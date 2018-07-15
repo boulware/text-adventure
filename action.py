@@ -6,12 +6,6 @@ import ipdb
 
 import re
 
-@unique
-class e_parameter_type(Enum):
-	command = 0 # The textual command associated with the Action. e.g., command="give" for the give Action
-	reference = 1 # A parameter that is eventually replaced with a reference to an object
-	keyword = 2 # A parameter that serves only to contextualize surrounding references. e.g., "to" in "give ITEM to TARGET"
-
 class Parameter:
 	def __init__(self, user_query):
 		self.user_query = user_query
@@ -71,5 +65,4 @@ def find_regex(syntax):
 	if not command:
 		print("Empty syntax encountered.") # (TODO) This should probably be dealt with in a better way.
 
-	#print("syntax=\'{}\'; pattern=\'{}\'".format(syntax, pattern))
 	return command, re.compile(pattern)
