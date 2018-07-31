@@ -1,6 +1,12 @@
 {
 	"verbs": [
 		{
+			"lemma": "be",
+			"inflection": "is",
+			"syntax": "AGENT * COMPLEMENT",
+			"is_stative": true
+		},	
+		{
 			"lemma": "jump",
 			"inflection": "jumps",
 			"syntax": "AGENT *",
@@ -69,12 +75,6 @@
 			"inflection": "laughs",
 			"syntax": "AGENT *",
 			"is_stative": false
-		},
-		{
-			"lemma": "be",
-			"inflection": "is",
-			"syntax": "AGENT * COMPLEMENT",
-			"is_stative": true
 		},
 		{
 			"lemma": "have",

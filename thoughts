@@ -33,3 +33,22 @@ So let's list some ideas for generalizing this method.
 	particular parameters is, maybe even being able to specify more global syntax rules as well.
 * parameter list can also store information about what groups the targets can come from (people, items, etc.)
 * the action object will also be linked to a particular function, like player.kill(), player.give(), etc.
+
+----
+* we need some kind of "state template", something to store things like conditions, which still contain roles, but in a more generic way, such that the roles aren't referring to a specific instance. For the action [Anne gives Tim the apple], the pre-conditions are:
+	1) state: Anne has the apple
+	2) state: Tim does not have the apple
+
+but for the more generic action [AGENT gives RECIPIENT PATIENT] (or [AGENT GIVES PATIENT to RECIPIENT]), the pre-conditions are:
+	1) state: AGENT has PATIENT
+	2) state: RECIPIENT does not have PATIENT
+
+we have a way to model the specific instance's states (they are just a State object), but we don't yet have some way to model the more generic state, since the references are in a more generic, unresolved state.
+
+*******
+SCRATCH
+*******
+
+AGENT can run
+AGENT has PATIENT
+AGENT has money

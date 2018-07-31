@@ -7,6 +7,7 @@ from verb import Verb
 import verb as m_verb
 from state import State
 from event import Event
+from lexicon import Lexicon
 
 from world import World
 import world as m_world
@@ -15,6 +16,7 @@ events = []
 world_time = 0
 
 world = World()
+#Lexicon("data/nouns.dat", "data/verbs.dat", "data/adjectives.dat")
 
 player = m_group.find_member_by_name(world.people, 'tyler')
 

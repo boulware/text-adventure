@@ -45,10 +45,10 @@ def do(verb, action_string, time, verbs_group):
 	# in the long run to switch to some thing more generic, but it could also
 	# be a useful classification for pre- and post-conditions
 
-	params = match.groupdict()
-	roles_dict = {i:params[i] for i in params if i != 'VERB'}
-
 	if not bad_syntax:
+		params = match.groupdict()
+		roles_dict = {i:params[i] for i in params if i != 'VERB'}
+		
 		event_string = sub_roles(verb, roles_dict)
 
 		if verb.is_stative:
@@ -98,3 +98,11 @@ def parse_syntax(verb, syntax):
 		print("Empty syntax encountered.") # (TODO) This should probably be dealt with in a better way.
 
 	return re.compile(pattern), roles
+
+def parse_condition(condition_string, roles):
+	for word in condition_string.split():
+		if word.isupper():
+			pass
+			# Word is a reference
+		else:
+			pass
