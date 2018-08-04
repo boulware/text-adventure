@@ -1,0 +1,43 @@
+[
+	{
+		"name": "fruit",
+		"semantics": [
+			"has seeds"
+		]
+	},
+	{
+		"name": "apple",
+		"semantics": [
+			"is a fruit",
+			"is red"
+		]
+	},
+	{
+		"name": "banana",
+		"semantics": [
+			"is a fruit",
+			"is yellow"
+		]
+	},
+	{
+		"name": "strawberry",
+		"semantics": [
+			"is a fruit",
+			"is red"
+		]
+	},
+	{
+		"name": "orange",
+		"semantics": [
+			"is a fruit",
+			"is orange"
+		]
+	},
+	{
+		"name": "peach",
+		"semantics": [
+			"is a fruit",
+			"is orange or yellow"
+		]
+	}	
+]

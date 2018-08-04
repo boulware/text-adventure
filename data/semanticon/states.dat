@@ -1,0 +1,26 @@
+[
+	{
+		"lemma": "be",
+		"inflection": "is",
+		"syntax": "AGENT * COMPLEMENT",
+		"is_stative": true
+	},
+	{
+		"lemma": "have",
+		"inflection": "has",
+		"syntax": "AGENT * PATIENT",
+		"is_stative": true
+	},
+	{
+		"lemma": "want",
+		"inflection": "wants",
+		"syntax": "AGENT * PATIENT",
+		"is_stative": true
+	},
+	{
+		"lemma": "can",
+		"inflection": "can",
+		"syntax": "AGENT * COMPLEMENT",
+		"is_stative": true
+	}	
+]

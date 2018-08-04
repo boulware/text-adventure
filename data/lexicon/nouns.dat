@@ -1,0 +1,30 @@
+[
+	{
+		"lemma": "fruit",
+		"plural": "fruits",
+	},	
+	{
+		"lemma": "apple",
+		"plural": "apples"
+	},
+	{
+		"lemma": "banana",
+		"plural": "bananas"
+	},
+	{
+		"lemma": "strawberry",
+		"plural": "strawberries"
+	},
+	{
+		"lemma": "orange",
+		"plural": "oranges"
+	},
+	{
+		"lemma": "peach",
+		"plural": "peaches"
+	},
+	{
+		"lemma": "color",
+		"plural": "colors"
+	}
+]

@@ -1,0 +1,23 @@
+[
+	{
+		"verb_string": "be",
+		"roles": {
+			"agent": "john",
+			"complement": "alive"
+		}
+	},
+	{
+		"verb_string": "be",
+		"roles": {
+			"agent": "mary",
+			"complement": "alive"
+		}
+	},
+	{
+		"verb_string": "can",
+		"roles": {
+			"agent": "tyler",
+			"complement": "jump"
+		}
+	}
+]

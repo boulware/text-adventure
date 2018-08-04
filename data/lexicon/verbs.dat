@@ -1,0 +1,20 @@
+[
+	{
+		"lemma": "jump",
+		"inflections": [
+			"infinitive": "jump",
+			"continuous": "jumping",
+			"present"
+			"singular": [
+				"jump",
+				"jump",
+				"jumps"
+			],
+			"plural": [
+				"jump",
+				"jump",
+				"jump"
+			]
+		]
+	}
+]

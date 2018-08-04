@@ -1,0 +1,36 @@
+[
+	{
+		"lemma": "be",
+		"inflections":
+		{
+			"infinitive": "be",
+			"singular": [
+				"am",
+				"are",
+				"is"
+			],
+			"plural": [
+				"are",
+				"are",
+				"are"
+			]
+		}
+	},
+	{
+		"lemma": "jump",
+		"inflections":
+		{
+			"infinitive": "jump",
+			"singular": [
+				"jump",
+				"jump",
+				"jumps"
+			],
+			"plural": [
+				"jump",
+				"jump",
+				"jump"
+			]
+		}
+	}
+]

@@ -1,0 +1,24 @@
+[
+	{
+		"name": "default",
+		"rules": {
+			"infinitive": "*",
+			"imperative": "*",
+			"participle": {
+				"past": "*ed",
+				"present": "*ing"
+			},
+			"indicative": {
+				"past": "*ed",
+				"present": {
+					"singular": [
+						"*",
+						"*",
+						"*s"
+					],
+					"plural": "*"
+				}
+			}
+		}
+	}
+]

@@ -8,14 +8,13 @@ class Group(list):
 
 		if filepath:
 			with open(filepath) as file:
-				data = json.load(file)
+				items = json.load(file)
 
-				for _, members in data.items():
-					for member in members:
-						try:
-							self.append(member_class(**member, **kwargs))
-						except TypeError:
-							print("Invalid {} encountered in {}.".format(member_title, filepath))
+				for item in items:
+					try:
+						self.append(member_class(**item, **kwargs))
+					except TypeError:
+						print("Invalid {} encountered in {}.".format(member_title, filepath))
 
 # (TEMP) This is a workaround to return only a single (first found) member intead of the more generic list return of find_members_by_name()
 def find_member_by_name(group, name):

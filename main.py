@@ -3,14 +3,30 @@ import group as m_group
 from person import Person
 from item import Item
 from action import Action
-from verb import Verb
-import verb as m_verb
+import action as m_action
 from state import State
 from event import Event
 from lexicon import Lexicon
+from semanticon import Semanticon, SemantType
+from inflection import InflectionType, InflectionTense, InflectionNumber, InflectionPerson, InflectionModel, Inflection, inflect
 
 from world import World
 import world as m_world
+
+import json
+
+semanticon = Semanticon({	SemantType.Object: "data/semanticon/objects.dat",
+							SemantType.Action: "data/semanticon/actions.dat",
+							SemantType.State: "data/semanticon/states.dat",
+							SemantType.Property: "data/semanticon/properties.dat",
+							SemantType.Determination: "data/semanticon/determinations.dat"})
+
+
+inflection_models = Group("inflection models", InflectionModel, "data/lexicon/inflection_models.dat")
+default_model = m_group.find_member_by_name(inflection_models, 'default')
+this_inflection = Inflection(type_=InflectionType.Indicative, tense=InflectionTense.Past, number=InflectionNumber.Plural, person=InflectionPerson.First)
+inflected_word = inflect(default_model, "jump", this_inflection)
+print("inflected word={}".format(inflected_word))
 
 events = []
 world_time = 0
@@ -32,8 +48,8 @@ while text_input != 'q':
 
 	command, delim, arguments = text_input.partition(' ')
 	if command == ',?':
-		for verb in world.verbs:
-			print(verb.lemma + ' [' + verb.syntax + ']')
+		for action in world.actions:
+			print(action.lemma + ' [' + action.syntax + ']')
 	if command == ',q':
 		break
 	if command == ',s':
@@ -45,15 +61,15 @@ while text_input != 'q':
 
 	text_input = 'tyler ' + text_input
 
-	for verb in world.verbs:
-		if command == verb.lemma:
+	for action in world.actions:
+		if command == action.lemma:
 			world_time += 1
 
-			result = m_verb.do(verb, text_input, world_time, world.verbs)
+			result = m_action.do(action, text_input, world_time, world.actions)
 			if type(result) is Event:
 				world.events.append(result)
 				m_world.print_events(world)
-			# (CONC) Is it really necessary to check for stative verbs in a function called "do()"?
+			# (CONC) Is it really necessary to check for stative actions in a function called "do()"?
 			if type(result) is State:
 				world.states.append(result)
 				m_world.print_states(world)
